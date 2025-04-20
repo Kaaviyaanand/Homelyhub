@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types"; // for type-checking props
 import "../../CSS/FilterModal.css";
 import "react-input-range/lib/css/index.css"; //Importing CSS file for input range styling
-import InputRange from "react-input-range";
+import InputRange from 'react-input-range-18';
 
 const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
   const [priceRange, setPriceRange] = useState({
