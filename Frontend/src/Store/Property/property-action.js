@@ -5,7 +5,7 @@ export const getAllProperties=()=>async(dispatch,getState)=>{
    try{
         dispatch(propertyAction.getRequest())
         const{searchParams}=getState().properties;
-        const response=await axios.get(`/api/v1/rent/listing`,{
+        const response=await axios.get(`https://backennnd-1.onrender.com/api/v1/rent/listing`,{
          params:{...searchParams},
         });
         console.log(response);
