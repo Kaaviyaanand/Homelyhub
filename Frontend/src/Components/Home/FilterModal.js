@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types"; // for type-checking props
 import "../../CSS/FilterModal.css";
-import "react-input-range/lib/css/index.css"; //Importing CSS file for input range styling
-import InputRange from 'react-input-range-18';
+import Slider from "react-slider";
 
 const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
   const [priceRange, setPriceRange] = useState({
@@ -11,13 +10,13 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
   });
 
   const [propertyType, setPropertyType] = useState(
-    selectedFilters.propertyType || "" // Default it is empty or the selected property type from props
+    selectedFilters.propertyType || ""
   );
 
   const [roomType, setRoomType] = useState(selectedFilters.roomType || "");
   const [amenities, setAmenities] = useState(selectedFilters.amenities || []);
 
-  //useEffect hook to update states when selectedFilters prop changes
+  // useEffect hook to update states when selectedFilters prop changes
   useEffect(() => {
     setPriceRange({
       min: selectedFilters.priceRange?.min || 600,
@@ -28,23 +27,24 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
     setAmenities(selectedFilters.amenities || []);
   }, [selectedFilters]);
 
-  //Function to handle changes in price Range
+  // Function to handle changes in price Range
   const handlePriceRangeChange = (value) => {
-    setPriceRange(value); //it will update the price range state
+    setPriceRange({ min: value[0], max: value[1] });
   };
 
-  //function to handle min value
+  // function to handle min value
   const handleMinInputChange = (e) => {
     const minValue = parseInt(e.target.value, 10);
     setPriceRange((prev) => ({ ...prev, min: minValue }));
   };
-  //function to handle max value
+
+  // function to handle max value
   const handleMaxInputChange = (e) => {
     const maxValue = parseInt(e.target.value, 10);
     setPriceRange((prev) => ({ ...prev, max: maxValue }));
   };
 
-  //function to handle applying filters
+  // function to handle applying filters
   const handleFilterChange = () => {
     onFilterChange("minPrice", priceRange.min);
     onFilterChange("maxPrice", priceRange.max);
@@ -54,8 +54,7 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
     onClose(); // closes the modal
   };
 
-  //Options for property types
-
+  // Options for property types
   const propertyTypeOptions = [
     {
       value: "House",
@@ -90,8 +89,7 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
     },
   ];
 
-  //Options for amenities
-
+  // Options for amenities
   const amenitiesOptions = [
     {
       value: "Wifi",
@@ -130,7 +128,7 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
     },
   ];
 
-  //function to handle clearing filters
+  // function to handle clearing filters
   const handleClearFilters = () => {
     setPriceRange({ min: 600, max: 30000 }); // reset the price range
     setPropertyType("");
@@ -154,7 +152,7 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
     );
   };
 
-  //function to handle room type
+  // function to handle room type
   const handleRoomTypeChange = (selectedType) => {
     setRoomType((prevType) => (prevType === selectedType ? "" : selectedType));
   };
@@ -174,11 +172,14 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
         <div className="modal-filters-container">
           <div className="filter-section">
             <label>Price range:</label>
-            <InputRange
-              minValue={600}
-              maxValue={30000}
-              value={priceRange}
+            <Slider
+              min={600}
+              max={30000}
+              step={100}
+              value={[priceRange.min, priceRange.max]}
               onChange={handlePriceRangeChange}
+              renderTrack={(props, state) => <div {...props} className="slider-track" />}
+              renderThumb={(props, state) => <div {...props} className="slider-thumb" />}
             />
             <div className="range-inputs">
               <input
@@ -239,8 +240,6 @@ const FilterModal = ({ selectedFilters, onFilterChange, onClose }) => {
             <div className="amenities-checkboxes">
               {amenitiesOptions.map((option) => (
                 <div key={option.value} className="amenity-checkbox">
-                  {console.log(amenities.includes(option.value))}
-
                   <input
                     type="checkbox"
                     value={option.value}
