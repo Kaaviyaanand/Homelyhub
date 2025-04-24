@@ -27,7 +27,7 @@ export const processPayment = ({
     const cardNumberElement = elements.getElement(CardNumberElement);
     try {
       const response = await axios.post(
-        "/api/v1/rent/user/checkout-session",
+        "https://backennnd-1.onrender.com/api/v1/rent/user/checkout-session",
         {
           amount: totalAmount,
           currency: "inr",
