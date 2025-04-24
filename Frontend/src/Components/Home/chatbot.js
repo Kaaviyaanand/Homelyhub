@@ -28,7 +28,7 @@ const Chatbot = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/rent/chat', {
+      const res = await axios.post('https://backennnd-1.onrender.com/api/v1/rent/chat', {
         message: text
       });
 
